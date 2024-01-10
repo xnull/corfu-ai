@@ -1,0 +1,7 @@
+version: '3.2'
+
+services:
+  corfu-fb-tools:
+    build: .
+    image: corfudb/ai-log-processing:latest
+

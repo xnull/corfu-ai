@@ -1,0 +1,34 @@
+logging:
+  level: info
+
+fields_under_root: true
+
+# Corfu configuration
+filebeat.inputs:
+  - type: log
+    enabled: true
+    tags: "corfu-log"
+    paths:
+      - "${BASE_DIR}/corfu/corfu.*.log"
+    close_eof: true
+    #https://www.elastic.co/guide/en/beats/filebeat/current/multiline-examples.html
+    multiline:
+      # ISO8601 Date pattern
+      pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}'
+      negate: true
+      match: after
+
+output.file:
+  #codec.json:
+  #  pretty: true
+  #  escape_html: false
+  codec.format:
+      string: '{"msg": "%{[message]}"}'
+
+output:
+  file:
+    enabled: true
+    path: "${BASE_DIR}/out"
+    #filename: filebeat
+    number_of_files: 1024
+    rotate_every_kb: 1000000
