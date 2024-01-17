@@ -1,4 +1,5 @@
 set -e
+set -x
 
 rm -rf logs/out/**
 
