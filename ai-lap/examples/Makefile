@@ -22,6 +22,10 @@ run_embeddings: #embeddings_docker_build #run_log_processing
 
 run_ai:
 	echo "ai"
-	python3 ../ai/ai-app.py
+	python3 ../ai/ai_app.py
+
+run_ai_server:
+	echo "run ai server"
+	python3 ../ai/server.py
 
 run: run_embeddings

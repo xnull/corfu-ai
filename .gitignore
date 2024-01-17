@@ -1,2 +1,4 @@
 .DS_Store
 
+ai-lap/examples/logs/embeddings
+ai-lap/ai/__pycache__
