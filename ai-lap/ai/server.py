@@ -21,7 +21,8 @@ def get_companies():
   records = ai_app.run_ai(query, question_text)
   
   return {
-      "query": query,
+      "query": query_text,
+      "question": question_text,
       "records": records
   }
 

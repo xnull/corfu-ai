@@ -71,7 +71,7 @@ def run_llm(input_data, question):
 
     res = tokenizer.batch_decode(generated_ids)
 
-    return res[0]
+    return res[0][len(log_messages):]
 
 def run_ai(query, question):
     retrieval = retrieve(query)
