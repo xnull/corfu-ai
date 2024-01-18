@@ -54,7 +54,7 @@ def run_llm(input_data, question):
     for event in input_data:
         result_question + "\n" + event
     input_ids = tokenizer(result_question, return_tensors="pt").input_ids
-    generation_output = model.generate(input_ids=input_ids, max_new_tokens=128)
+    generation_output = llama_model.generate(input_ids=input_ids, max_new_tokens=128)
     return tokenizer.decode(generation_output[0])
 
 def run_ai(query, question):
