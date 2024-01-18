@@ -54,13 +54,17 @@ def retrieve(query):
     return result
 
 def run_llm(input_data, question):
-    result_question = question
+    #result_question = question
+    #for event in input_data:
+    #    result_question += event[:200]
+    result_question = [question + ' Here is the log messages:']
     for event in input_data:
-        result_question += event[:200]
-    inputs = tokenizer(result_question, return_tensors="pt")
-    generate_ids = llama_model.generate(inputs.input_ids, max_length=1024)
+        result_question.append(event[:200])
 
-    res = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)
+    inputs = tokenizer(result_question, return_tensors="pt")
+    generate_ids = llama_model.generate(inputs.input_ids, max_new_tokens=250, do_sample=True)
+
+    res = tokenizer.batch_decode(generate_ids)[0]
 
     return res[0]
 
