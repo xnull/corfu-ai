@@ -54,9 +54,9 @@ def retrieve(query):
     return result
 
 def run_llm(input_data, question):
-    result_question = question + ' Here is the log messages:\n'
+    prompt = question + ' Here is the log messages:\n'
     for event in input_data:
-        result_question += event[:200]
+        prompt += event[:200]
     #prompt = [question + ' Here is the log messages:']
     #for event in input_data:
     #    prompt.append(event[:200])
