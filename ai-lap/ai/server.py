@@ -12,6 +12,11 @@ def get_companies():
   query_text = request.args.get('query')
   question_text = request.args.get('question')
 
+  with open('questions.txt', 'a') as f:
+    f.write(query_text + '\n')
+    f.write(question_text + '\n')
+    f.write('\n')
+
   query = [query_text]
   records = ai_app.run_ai(query, question_text)
   
