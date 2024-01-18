@@ -9,7 +9,7 @@ import torch
 import linecache
 import json
 
-from transformers import LlamaTokenizer, LlamaForCausalLM
+from transformers import AutoTokenizer, LlamaForCausalLM, LlamaTokenizer, AutoModelForCausalLM
 
 # Prompt engineering!!!
 
@@ -17,9 +17,15 @@ model = SentenceTransformer('distilbert-base-uncased', device='cpu')
 dataset = load_dataset('csv', data_files=['logs/embeddings/embeddings.csv'])
 dataset_embeddings = torch.from_numpy(dataset["train"].to_pandas().to_numpy()).to(torch.float)
 
-model_path = 'openlm-research/open_llama_3b'
-tokenizer = LlamaTokenizer.from_pretrained(model_path, low_cpu_mem_usage=True)
-llama_model = LlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True)
+model_path = "mistralai/Mistral-7B-v0.1"
+device='cpu'
+
+
+#model_path = 'openlm-research/open_llama_3b'
+#tokenizer = LlamaTokenizer.from_pretrained(model_path, low_cpu_mem_usage=True)
+#llama_model = LlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True)
+tokenizer = AutoTokenizer.from_pretrained(model_path, device_map=device)
+llama_model = AutoModelForCausalLM.from_pretrained(model_path, device_map=device)
 
 def retrieve(query):
     print('semantic search')
@@ -51,9 +57,12 @@ def run_llm(input_data, question):
     result_question = question
     for event in input_data:
         result_question + "\n" + event
-    input_ids = tokenizer(result_question, return_tensors="pt").input_ids
-    generation_output = llama_model.generate(input_ids=input_ids, max_new_tokens=128)
-    return tokenizer.decode(generation_output[0])
+    inputs = tokenizer(result_question, return_tensors="pt")
+    generate_ids = model.generate(inputs.input_ids, max_length=128)
+
+    res = tokenizer.decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)
+
+    return res[0]
 
 def run_ai(query, question):
     retrieval = retrieve(query)
