@@ -73,7 +73,7 @@ def run_llm(input_data, question):
 
     res = tokenizer.batch_decode(generated_ids)
 
-    msg_size = len(full_question) + len(log_messages)
+    msg_size = len(full_question) + len(log_messages) + 24
     return res[0][msg_size:]
 
 def run_ai(query, question):
