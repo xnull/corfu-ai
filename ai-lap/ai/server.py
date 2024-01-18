@@ -22,4 +22,4 @@ def get_companies():
 
 if __name__ == '__main__':
     api.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-    api.run(debug=True)
+    api.run(debug=True, port=5000, host='0.0.0.0')
