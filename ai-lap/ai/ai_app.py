@@ -17,7 +17,7 @@ model = SentenceTransformer('distilbert-base-uncased', device='cpu')
 dataset = load_dataset('csv', data_files=['logs/embeddings/embeddings.csv'])
 dataset_embeddings = torch.from_numpy(dataset["train"].to_pandas().to_numpy()).to(torch.float)
 
-model_path = "mistralai/Mistral-7B-v0.1"
+model_path = "mistralai/Mistral-7B-Instruct-v0.2"
 device='cpu'
 
 
@@ -31,7 +31,7 @@ def retrieve(query):
     print('semantic search')
     
     query_embeddings = model.encode(query)
-    hits = semantic_search(query_embeddings, dataset_embeddings, top_k=10)
+    hits = semantic_search(query_embeddings, dataset_embeddings, top_k=5)
 
     print("\n\n")
 
@@ -58,7 +58,7 @@ def run_llm(input_data, question):
     for event in input_data:
         result_question += event[:200]
     inputs = tokenizer(result_question, return_tensors="pt")
-    generate_ids = llama_model.generate(inputs.input_ids, max_length=512)
+    generate_ids = llama_model.generate(inputs.input_ids, max_length=1024)
 
     res = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)
 
