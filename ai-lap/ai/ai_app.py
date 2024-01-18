@@ -39,7 +39,7 @@ def retrieve(query):
 
     lines = []
     for id in ids:
-        source_data = linecache.getline('logs/out/messages/filebeat-20240116.ndjson', id)
+        source_data = linecache.getline('logs/out/messages/filebeat.json', id)
         source_data_json = json.loads(source_data)
         lines.append(source_data_json)
 
