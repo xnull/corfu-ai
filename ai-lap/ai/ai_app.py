@@ -31,7 +31,7 @@ def retrieve(query):
     print('semantic search')
     
     query_embeddings = model.encode(query)
-    hits = semantic_search(query_embeddings, dataset_embeddings, top_k=50)
+    hits = semantic_search(query_embeddings, dataset_embeddings, top_k=10)
 
     print("\n\n")
 
@@ -58,7 +58,7 @@ def run_llm(input_data, question):
     for event in input_data:
         result_question += event[:200]
     inputs = tokenizer(result_question, return_tensors="pt")
-    generate_ids = llama_model.generate(inputs.input_ids, max_length=128)
+    generate_ids = llama_model.generate(inputs.input_ids, max_length=512)
 
     res = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)
 
