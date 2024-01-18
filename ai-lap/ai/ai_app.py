@@ -56,7 +56,7 @@ def retrieve(query):
 def run_llm(input_data, question):
     result_question = question
     for event in input_data:
-        result_question + "\n" + event
+        result_question += event[:200]
     inputs = tokenizer(result_question, return_tensors="pt")
     generate_ids = llama_model.generate(inputs.input_ids, max_length=128)
 
