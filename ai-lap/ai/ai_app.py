@@ -58,9 +58,9 @@ def run_llm(input_data, question):
     #for event in input_data:
     #    prompt += event[:200]
 
-    log_messages = []
+    log_messages = ""
     for event in input_data:
-        log_messages.append(event[:200])
+        log_messages += event[:200] + '\n'
     prompt = [
         {"role": "user", "content": question + ' Here is the log messages:'},
         {"role": "assistant", "content": log_messages}
