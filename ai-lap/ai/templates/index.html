@@ -4,20 +4,68 @@
     <meta charset="UTF-8">
     <title>FlaskBlog</title>
 </head>
-<body>
-    <h1>Welcome to AI territory</h1>
-    <form action="/ai" method="get">
-        <label for="query">Query:</label>
-        <br>
-        <input 
-            type="text" id="query" name="query" 
-            value="when SequenceServer bootstrapped?" 
-            style="height:40px;width:800px;font-size:14pt;"
-        >
-        <br><br>
-        <input type="submit" value="Submit">
-    </form>
 
+<style>
+.ai-button {
+  background-color: #04AA6D; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.ai-submit-button {
+  background-color: white;
+  color: black;
+  border: 2px solid rgba(10, 40, 103, 0.639);
+}
+
+.custom-label {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+</style>
+
+<body>
+    <div class="container">
+        <h1>Welcome to AI territory</h1>
+        <div style="display: flex;">
+            <form action="/ai" method="get">
+                <label for="query" class="custom-label">
+                    Query:
+                </label>
+                <div style="display: flex; margin-bottom: 40px;">
+                    <input 
+                        type="text" id="query" name="query" 
+                        value="when SequenceServer bootstrapped?" 
+                        style="height:40px;width:800px;font-size:14pt;padding: 5px; padding-left: 10px;"
+                    >
+                </div>
+
+                <label for="question" class="custom-label">
+                    Question:
+                </label>
+                <div style="display: flex;margin-bottom: 25px;">
+                    <input 
+                        type="text" id="question" name="question" 
+                        value="What useful information I can get about the sequencer?" 
+                        style="height:40px;width:800px;font-size:14pt;padding: 5px; padding-left: 10px;"
+                    >
+                </div>
+
+                <div style="display: flex;justify-content: flex-end;">
+                    <input type="submit" class="ai-button ai-submit-button" value="Submit">
+                </div>
+            </form>
+            
+        </div>
+    </div>
 
 </body>
 </html>

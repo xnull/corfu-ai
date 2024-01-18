@@ -3,22 +3,31 @@ from sentence_transformers import SentenceTransformer
 
 from datasets import load_dataset
 
+from transformers import BertTokenizer
+
 import torch
 import linecache
 import json
 
+from transformers import LlamaTokenizer, LlamaForCausalLM
+
 # Prompt engineering!!!
 
-def run_ai(query):
+model = SentenceTransformer('distilbert-base-uncased', device='mps')
+dataset = load_dataset('csv', data_files=['logs/embeddings/embeddings.csv'])
+dataset_embeddings = torch.from_numpy(dataset["train"].to_pandas().to_numpy()).to(torch.float)
+
+model_path = 'openlm-research/open_llama_3b'
+tokenizer = LlamaTokenizer.from_pretrained(model_path, low_cpu_mem_usage=True)
+llama_model = LlamaForCausalLM.from_pretrained(
+    model_path, torch_dtype=torch.float16, low_cpu_mem_usage=True
+)
+
+def retrieve(query):
     print('semantic search')
-
-    model = SentenceTransformer('distilbert-base-uncased', device='mps')
-
+    
     query_embeddings = model.encode(query)
-
-    dataset = load_dataset('csv', data_files=['logs/embeddings/embeddings.csv'])
-    dataset_embeddings = torch.from_numpy(dataset["train"].to_pandas().to_numpy()).to(torch.float)
-    hits = semantic_search(query_embeddings, dataset_embeddings, top_k=10)
+    hits = semantic_search(query_embeddings, dataset_embeddings, top_k=50)
 
     print("\n\n")
 
@@ -34,20 +43,41 @@ def run_ai(query):
         source_data_json = json.loads(source_data)
         lines.append(source_data_json)
 
-    print("lines: " + str(len(lines)))
-
     result= []
     for line in lines:
         result.append(line['message'])
 
     return result
 
-query = [
+def run_llm(input_data, question):
+    result_question = question
+    for event in input_data:
+        result_question + "\n" + event
+    input_ids = tokenizer(result_question, return_tensors="pt").input_ids
+    generation_output = model.generate(input_ids=input_ids, max_new_tokens=128)
+    return tokenizer.decode(generation_output[0])
+
+def run_ai(query, question):
+    retrieval = retrieve(query)
+    ### llm: check all the components and servers and find the most critical errors
+    #knowledge_base = {
+    #    servers: ['SequenserServer', 'LogUnitServer', 'ManagementServer', 'LayoutServer'],
+    #    components: ['failure detector', 'strem log']
+    #}
+    llm_response = run_llm(retrieval, question)
+
+    return {
+        "retrieval": retrieval,
+        "llm": llm_response
+    }
+
+
+#query = [
         #Find messages which changes the state, and sort by time'
         #'Find wrong epoch exceptions and failure detector errors'
         #'Find all fluctuations in the system'
         #'when SequenceServer bootstrapped'
         #'when Sequence server had a problem?'
-        'when SequenceServer bootstrapped and sort by time'
-    ]
+#        'when SequenceServer bootstrapped and sort by time'
+#    ]
 #run_ai(query)

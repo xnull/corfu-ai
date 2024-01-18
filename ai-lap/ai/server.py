@@ -10,12 +10,14 @@ def index():
 @api.route('/ai', methods=['GET'])
 def get_companies():
   query_text = request.args.get('query')
+  question_text = request.args.get('question')
+
   query = [query_text]
-  response = ai_app.run_ai(query)
+  records = ai_app.run_ai(query, question_text)
   
   return {
       "query": query,
-      "response": response
+      "records": records
   }
 
 if __name__ == '__main__':
