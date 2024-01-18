@@ -13,7 +13,7 @@ from transformers import LlamaTokenizer, LlamaForCausalLM
 
 # Prompt engineering!!!
 
-model = SentenceTransformer('distilbert-base-uncased', device='mps')
+model = SentenceTransformer('distilbert-base-uncased', device='cpu')
 dataset = load_dataset('csv', data_files=['logs/embeddings/embeddings.csv'])
 dataset_embeddings = torch.from_numpy(dataset["train"].to_pandas().to_numpy()).to(torch.float)
 
