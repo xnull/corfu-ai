@@ -61,8 +61,10 @@ def run_llm(input_data, question):
     log_messages = ""
     for event in input_data:
         log_messages += event[:200] + '\n'
+
+    full_question = question + ' Here is the log messages:'
     prompt = [
-        {"role": "user", "content": question + ' Here is the log messages:'},
+        {"role": "user", "content": full_question},
         {"role": "assistant", "content": log_messages}
     ]
 
@@ -71,7 +73,8 @@ def run_llm(input_data, question):
 
     res = tokenizer.batch_decode(generated_ids)
 
-    return res[0][len(log_messages):]
+    msg_size = len(full_question) + len(log_messages)
+    return res[0][msg_size:]
 
 def run_ai(query, question):
     retrieval = retrieve(query)
