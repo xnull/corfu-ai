@@ -19,9 +19,7 @@ dataset_embeddings = torch.from_numpy(dataset["train"].to_pandas().to_numpy()).t
 
 model_path = 'openlm-research/open_llama_3b'
 tokenizer = LlamaTokenizer.from_pretrained(model_path, low_cpu_mem_usage=True)
-llama_model = LlamaForCausalLM.from_pretrained(
-    model_path, torch_dtype=torch.float16, low_cpu_mem_usage=True
-)
+llama_model = LlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True)
 
 def retrieve(query):
     print('semantic search')
