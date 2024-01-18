@@ -62,8 +62,8 @@ def run_llm(input_data, question):
     for event in input_data:
         log_messages.append(event[:200])
     prompt = [
-        {"role": "user", "prompt": question + ' Here is the log messages:'},
-        {"role": "assistant", "log_messages": log_messages}
+        {"role": "user", "content": question + ' Here is the log messages:'},
+        {"role": "assistant", "content": log_messages}
     ]
 
     model_inputs = tokenizer.apply_chat_template(prompt, return_tensors="pt")
