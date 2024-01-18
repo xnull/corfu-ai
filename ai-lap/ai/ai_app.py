@@ -18,7 +18,7 @@ dataset = load_dataset('csv', data_files=['logs/embeddings/embeddings.csv'])
 dataset_embeddings = torch.from_numpy(dataset["train"].to_pandas().to_numpy()).to(torch.float)
 
 model_path = "mistralai/Mistral-7B-Instruct-v0.2"
-device='cpu'
+device='auto'
 
 
 #model_path = 'openlm-research/open_llama_3b'
@@ -54,14 +54,19 @@ def retrieve(query):
     return result
 
 def run_llm(input_data, question):
-    prompt = question + ' Here is the log messages:\n'
-    for event in input_data:
-        prompt += event[:200]
-    #prompt = [question + ' Here is the log messages:']
+    #prompt = question + ' Here is the log messages:\n'
     #for event in input_data:
-    #    prompt.append(event[:200])
+    #    prompt += event[:200]
 
-    model_inputs = tokenizer(prompt, return_tensors="pt")
+    log_messages = []
+    for event in input_data:
+        log_messages.append(event[:200])
+    prompt = [
+        {"role": "user", "prompt": question + ' Here is the log messages:'},
+        {"role": "assistant", "log_messages": log_messages}
+    ]
+
+    model_inputs = tokenizer.apply_chat_template(prompt, return_tensors="pt")
     generated_ids = llama_model.generate(**model_inputs, max_new_tokens=1000, do_sample=True)
 
     res = tokenizer.batch_decode(generated_ids)
