@@ -58,7 +58,7 @@ def run_llm(input_data, question):
     for event in input_data:
         result_question + "\n" + event
     inputs = tokenizer(result_question, return_tensors="pt")
-    generate_ids = model.generate(inputs.input_ids, max_length=128)
+    generate_ids = llama_model.generate(inputs.input_ids, max_length=128)
 
     res = tokenizer.decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)
 
