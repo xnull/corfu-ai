@@ -64,7 +64,7 @@ def run_llm(input_data, question):
     model_inputs = tokenizer(prompt, return_tensors="pt")
     generated_ids = llama_model.generate(**model_inputs, max_new_tokens=1000, do_sample=True)
 
-    res = tokenizer.batch_decode(generated_ids)[0]
+    res = tokenizer.batch_decode(generated_ids)
 
     return res[0]
 
