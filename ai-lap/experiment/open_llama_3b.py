@@ -33,8 +33,6 @@ model_path = 'openlm-research/open_llama_3b'
 tokenizer = LlamaTokenizer.from_pretrained(model_path, device_map='auto')
 model = LlamaForCausalLM.from_pretrained(model_path, device_map='auto')
 
-print(model.hf_device_map)
-exit()
 
 print('start')
 counter = 0;
