@@ -3,7 +3,6 @@ import json
 import os
 
 from transformers import LlamaTokenizer, LlamaForCausalLM
-from accelerate import Accelerator
 
 def file_read(dir_name):
     res = []
@@ -29,7 +28,9 @@ sentiment = {
 
 device = 'cpu'
 
-model_path = 'openlm-research/open_llama_3b'
+#model_path = 'openlm-research/open_llama_3b'
+model_path = 'TinyLlama/TinyLlama-1.1B-Chat-v1.0'
+
 tokenizer = LlamaTokenizer.from_pretrained(model_path, device_map='auto')
 model = LlamaForCausalLM.from_pretrained(model_path, device_map='auto')
 
