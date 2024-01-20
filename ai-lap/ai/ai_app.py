@@ -24,14 +24,14 @@ device='auto'
 #model_path = 'openlm-research/open_llama_3b'
 #tokenizer = LlamaTokenizer.from_pretrained(model_path, low_cpu_mem_usage=True)
 #llama_model = LlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True)
-tokenizer = AutoTokenizer.from_pretrained(model_path, device_map=device)
-llama_model = AutoModelForCausalLM.from_pretrained(model_path, device_map=device)
+#tokenizer = AutoTokenizer.from_pretrained(model_path, device_map=device)
+#llama_model = AutoModelForCausalLM.from_pretrained(model_path, device_map=device)
 
 def retrieve(query):
     print('semantic search')
     
     query_embeddings = model.encode(query)
-    hits = semantic_search(query_embeddings, dataset_embeddings, top_k=5)
+    hits = semantic_search(query_embeddings, dataset_embeddings, top_k=50)
 
     print("\n\n")
 
@@ -83,11 +83,12 @@ def run_ai(query, question):
     #    servers: ['SequenserServer', 'LogUnitServer', 'ManagementServer', 'LayoutServer'],
     #    components: ['failure detector', 'strem log']
     #}
-    llm_response = run_llm(retrieval, question)
+    
+    #llm_response = run_llm(retrieval, question)
 
     return {
         "retrieval": retrieval,
-        "llm": llm_response
+        #"llm": llm_response
     }
 
 

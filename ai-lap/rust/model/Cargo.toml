@@ -1,0 +1,23 @@
+[package]
+name = "model"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = "1.0.193"
+serde_json = "1.0.108"
+
+anyhow = "1.0.77"
+
+candle-core = { version = "0.3.2" }
+candle-transformers = "0.3.2"
+candle-datasets = "0.3.2"
+candle-kernels = {version = "0.3.2", optional = true }
+candle-nn = { version = "0.3.2" }
+
+tokenizers = { version = "0.15.0", default-features = false, features = ["onig"] }
+hf-hub = "0.3.2"
+
+accelerate-src = { version = "0.3.2" }
