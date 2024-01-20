@@ -30,7 +30,7 @@ device = 'cpu'
 
 from transformers import pipeline
 
-pipe = pipeline("text-generation", model="TinyLlama/TinyLlama-1.1B-Chat-v1.0", device_map="auto")
+sentiment_analysis = pipeline("sentiment-analysis",model="siebert/sentiment-roberta-large-english", device_map='auto')
 
 print('start')
 counter = 0;
@@ -38,27 +38,17 @@ for query in messages:
     counter += 1
     if counter % 10 == 0:
         print("iteration:" + str(counter) + ". stats: " + str(sentiment))
+        
 
-    messages = [
-        {
-            "role": "system",
-            "content": "You always have to answer on a question only with words: POSITIVE or NEGATIVE or NEUTRAL",
-        },
-        {
-            "role": "user", 
-            "content": query[:2048]
-        },
-    ]
-    prompt = pipe.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=False)
-    outputs = pipe(prompt, max_new_tokens=12, do_sample=True, temperature=0.7, top_k=50, top_p=0.95)
-    res = outputs[0]["generated_text"]
-
+    res = sentiment_analysis(query[:1024])
+    res = res[0]['label']
+    
     if 'POSITIVE' in res:
         sentiment['positive'] += 1
     
     if 'NEGATIVE' in res:
         sentiment['negative'] += 1
-        print("negative result for: " + query[:2048])
+        #print("!!!my output! negative result for query: " + query[:1024])
 
     if 'NEUTRAL' in res:
         sentiment['neutral'] += 1
