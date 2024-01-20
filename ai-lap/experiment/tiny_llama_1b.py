@@ -28,10 +28,9 @@ sentiment = {
 
 device = 'cpu'
 
-model_path = 'openlm-research/open_llama_3b'
-tokenizer = LlamaTokenizer.from_pretrained(model_path, device_map='auto')
-model = LlamaForCausalLM.from_pretrained(model_path, device_map='auto')
+from transformers import pipeline
 
+pipe = pipeline("text-generation", model="TinyLlama/TinyLlama-1.1B-Chat-v1.0", device_map="auto")
 
 print('start')
 counter = 0;
@@ -40,10 +39,19 @@ for query in messages:
     if counter % 10 == 0:
         print("iteration:" + str(counter))
 
-    prompt = "Answer only POSITIVE or NEGATIVE or NEUTRAL without any other additional explanation. Here is the text: " + query[:2048]
-    input_ids = tokenizer(prompt, return_tensors="pt").input_ids
-    generation_output = model.generate(input_ids=input_ids, max_new_tokens=128)
-    res = tokenizer.decode(generation_output[0])
+    messages = [
+        {
+            "role": "system",
+            "content": "You always have to answer on a question only with words: POSITIVE or NEGATIVE or NEUTRAL",
+        },
+        {
+            "role": "user", 
+            "content": query[:2048]
+        },
+    ]
+    prompt = pipe.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=False)
+    outputs = pipe(prompt, max_new_tokens=12, do_sample=True, temperature=0.7, top_k=50, top_p=0.95)
+    res = outputs[0]["generated_text"]
 
     if 'POSITIVE' in res:
         sentiment['positive'] += 1
