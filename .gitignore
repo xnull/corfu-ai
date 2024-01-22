@@ -4,3 +4,4 @@ ai-lap/examples/logs/embeddings
 ai-lap/ai/__pycache__
 
 ai-lap/rust/model/target
+ai-lap/examples/offload

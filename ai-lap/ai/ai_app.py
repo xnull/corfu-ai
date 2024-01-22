@@ -21,11 +21,12 @@ model_path = "mistralai/Mistral-7B-Instruct-v0.2"
 device='auto'
 
 
-#model_path = 'openlm-research/open_llama_3b'
-#tokenizer = LlamaTokenizer.from_pretrained(model_path, low_cpu_mem_usage=True)
-#llama_model = LlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True)
-#tokenizer = AutoTokenizer.from_pretrained(model_path, device_map=device)
-#llama_model = AutoModelForCausalLM.from_pretrained(model_path, device_map=device)
+model_path = 'openlm-research/open_llama_3b'
+tokenizer = LlamaTokenizer.from_pretrained(model_path, device_map=device, offload_folder="offload")
+llama_model = LlamaForCausalLM.from_pretrained(model_path, device_map=device, offload_folder="offload")
+
+#tokenizer = AutoTokenizer.from_pretrained(model_path, device_map=device, offload_folder="offload")
+#llama_model = AutoModelForCausalLM.from_pretrained(model_path, device_map=device, offload_folder="offload")
 
 def retrieve(query):
     print('semantic search')
@@ -84,11 +85,11 @@ def run_ai(query, question):
     #    components: ['failure detector', 'strem log']
     #}
     
-    #llm_response = run_llm(retrieval, question)
+    llm_response = run_llm(retrieval, question)
 
     return {
         "retrieval": retrieval,
-        #"llm": llm_response
+        "llm": llm_response
     }
 
 

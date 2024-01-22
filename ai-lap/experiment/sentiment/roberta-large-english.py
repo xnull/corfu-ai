@@ -47,7 +47,7 @@ for query in messages:
     
     if 'NEGATIVE' in res:
         sentiment['negative'] += 1
-        #print("!!!my output! negative result for query: " + query[:1024])
+        print("!!!my output! negative result for query: " + query[:1024])
 
     if 'NEUTRAL' in res:
         sentiment['neutral'] += 1

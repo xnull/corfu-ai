@@ -28,3 +28,9 @@ What useful information I can get about the sequencer?
 Failure detector error
 What useful information I can get about the sequencer?
 
+when SequenceServer bootstrapped?
+What useful information I can get about the sequencer?
+
+when SequenceServer bootstrapped?
+What useful information I can get about the sequencer?
+

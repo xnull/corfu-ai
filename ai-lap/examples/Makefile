@@ -26,6 +26,6 @@ run_ai:
 
 run_ai_server:
 	echo "run ai server"
-	python3 ../ai/server.py
+	export PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 && python3 ../ai/server.py
 
 run: run_embeddings

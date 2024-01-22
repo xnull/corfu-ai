@@ -1,5 +1,6 @@
 import ai_app
 from flask import Flask, json, render_template, request
+import os
 
 api = Flask(__name__)
 
@@ -8,7 +9,7 @@ def index():
     return render_template('index.html')
 
 @api.route('/ai', methods=['GET'])
-def get_companies():
+def run_ai_proceessing():
   query_text = request.args.get('query')
   question_text = request.args.get('question')
 
@@ -27,5 +28,7 @@ def get_companies():
   }
 
 if __name__ == '__main__':
+    os.environ['PYTORCH_MPS_HIGH_WATERMARK_RATIO'] = '0.0' 
+
     api.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
     api.run(debug=True, port=5005, host='0.0.0.0')
