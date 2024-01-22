@@ -19,6 +19,10 @@ filebeat.inputs:
       match: after
 
 processors:
+ - dissect:
+      tokenizer: '%{ts} | %{logLevel} |'
+      field: 'message'
+      target_prefix: ""
  - drop_fields:
      fields: ["host", "log", "tags", "input", "agent", "ecs"]
 
